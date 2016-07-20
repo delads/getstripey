@@ -1,6 +1,6 @@
 <header class="navbar navbar-fixed-top navbar-default">
   <div class="container">
-    <%= link_to "Stripey", root_path, class: "btn btn-lg btn-success", id: "logo" %>
+    <%= link_to "Stripey", root_path, class: "btn btn-lg btn-primary", id: "logo" %>
     
     
     <!-- <div class="nav_item">
@@ -15,12 +15,12 @@
     <div class="pull-right">
         <% if logged_in? %>
           <div class="nav_item">
-            <%= link_to "New Recipe", new_recipe_path, class: "btn btn-default btn-warning" %>
+            <%= link_to "New Product", new_recipe_path, class: "btn btn-default btn-default" %>
           </div>
           
           <ul class="nav_item">
             <li class="dropdown">
-              <%= link_to '#', class: "btn btn-default btn-danger dropdown-toggle", "data-toggle" => "dropdown" do %>
+              <%= link_to '#', class: "btn btn-default btn-default dropdown-toggle", "data-toggle" => "dropdown" do %>
                 <%= current_user.chefname %><b class="caret"></b>
               <% end %>
               <ul class='dropdown-menu'>

@@ -8,10 +8,15 @@
       <h5>Brought to you by: <%= @recipe.chef.chefname %></h5>
     </p>
   </div>
+  
   <div class="col-md-8">
     <% if logged_in? and @recipe.chef == current_user %>
-      <%= link_to "Edit this Product Listing", edit_recipe_path(@recipe), class: "btn btn-success pull-right" %>
+      <%= link_to "delete Product", @recipe, method: :delete, class: "btn btn-danger pull-left", data: { confirm: "You sure?" } %>
+      <%= link_to "Edit Product", edit_recipe_path(@recipe), class: "btn btn-success pull-right" %>
     <% end %>
+    
+    <br><br><br>
+    
     <h3><%= @recipe.summary %></h3>
     
     <div class="show_recipe">
