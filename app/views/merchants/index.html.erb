@@ -2,10 +2,10 @@
 
 <ul class="nav nav-tabs">
   <li>
-    <%= link_to "Products", recipes_path %>
+    <%= link_to "Products", products_path %>
   </li>
   <li  class='active'>
-    <%= link_to "Stores", chefs_path %>
+    <%= link_to "Stores", merchants_path %>
   </li>
 </ul>
 
@@ -17,13 +17,13 @@
   </div>
 </div>
 
-<% @chefs.each do |chef| %>
+<% @merchants.each do |merchant| %>
   
   <div class="row">
     <div class="col-md-4 col-md-offset-4 center">
-      <%= link_to gravatar_for(chef, size: 200),chef_path(chef) %>
+      <%= link_to gravatar_for(merchant, size: 200),merchant_path(merchant) %>
       <p>
-        <h5>Store name: <%= chef.chefname %></h5>
+        <h5>Store name: <%= merchant.merchantname %></h5>
       </p>
       
     </div>

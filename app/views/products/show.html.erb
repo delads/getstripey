@@ -1,0 +1,63 @@
+<%= render 'shared/page_title', title: @product.name %>
+
+
+<div class="row">
+  <div class="col-md4 pull-right center">
+    <%= link_to gravatar_for(@product.merchant, size:200), merchant_path(@product.merchant) %>
+    <p>
+      <h5>Brought to you by: <%= @product.merchant.merchantname %></h5>
+    </p>
+  </div>
+  
+  <div class="col-md-8">
+    <% if logged_in? and @product.merchant == current_user %>
+    
+    <!--
+      <%= link_to "Delete Product", @product, method: :delete, class: "btn btn-danger pull-left", data: { confirm: "You sure?" } %>
+      <%= link_to "Edit Product", edit_product_path(@product), class: "btn btn-success pull-right" %>
+     -->
+     
+      <ul class="nav_item pull-right">
+        <li class="dropdown " >
+          <%= link_to '#', class: "btn btn-default btn-success dropdown-toggle ", "data-toggle" => "dropdown" do %>
+            Product Action&nbsp <b class="caret"></b>
+          <% end %>
+          <ul class='dropdown-menu'>
+            <li><%= link_to "Edit Product", edit_product_path(@product) %></li>
+            <li><%= link_to "Delete Product",  @product, method: :delete,data: { confirm: "You sure?" } %></li>
+          </ul>
+        </li>
+      </ul>
+          
+    <% end %>
+    
+    
+          
+          
+    
+    <br><br><br>
+    
+    <h3><%= @product.summary %></h3>
+    
+    <div class="show_product">
+      <%= image_tag(@product.picture.url, class: "gravatar") if @product.picture? %>
+    </div>
+    
+    <div class="well">
+      <p>
+        <strong>Details::</strong>
+      </p>
+      <%= simple_format(@product.description )%>
+      <div class="pull-right">
+        <%= link_to like_product_path(@product, like: true), method: :post do %>
+          <i class="glyphicon glyphicon-thumbs-up"></i> &nbsp; <%= @product.thumbs_up_total %>
+        <% end %> &nbsp;&nbsp;&nbsp;&nbsp;
+        <%= link_to like_product_path(@product, like: false), method: :post do %>
+          <i class="glyphicon glyphicon-thumbs-down"></i> &nbsp; <%= @product.thumbs_down_total %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h5><%= link_to "Return to full Products Listing", products_path, class: "btn btn-success btn-small" %></h5>

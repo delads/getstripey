@@ -15,17 +15,17 @@
     <div class="pull-right">
         <% if logged_in? %>
           <div class="nav_item">
-            <%= link_to "New Product", new_recipe_path, class: "btn btn-default btn-default" %>
+            <%= link_to "New Product", new_product_path, class: "btn btn-default btn-default" %>
           </div>
           
           <ul class="nav_item">
             <li class="dropdown">
               <%= link_to '#', class: "btn btn-default btn-default dropdown-toggle", "data-toggle" => "dropdown" do %>
-                <%= current_user.chefname %><b class="caret"></b>
+                <%= current_user.merchantname %><b class="caret"></b>
               <% end %>
               <ul class='dropdown-menu'>
-                <li><%= link_to "View Profile", chef_path(current_user) %></li>
-                <li><%= link_to "Edit Profile", edit_chef_path(current_user) %></li>
+                <li><%= link_to "View Profile", merchant_path(current_user) %></li>
+                <li><%= link_to "Edit Profile", edit_merchant_path(current_user) %></li>
                 <li class="divider"></li>
                 <li><%= link_to "Logout", logout_path %></li>
               </ul>

@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   
   helper_method :current_user, :logged_in? 
   def current_user
-    @current_user ||= Chef.find(session[:chef_id]) if session[:chef_id]
+    @current_user ||= Merchant.find(session[:merchant_id]) if session[:merchant_id]
   end
   
   def logged_in?

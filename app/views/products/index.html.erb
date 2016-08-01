@@ -1,0 +1,51 @@
+<%= render 'shared/page_title', title: 'All Products' %>
+
+<ul class="nav nav-tabs">
+  <li class='active'>
+    <%= link_to "Products", products_path %>
+  </li>
+  <li>
+    <%= link_to "Stores", merchants_path %>
+  </li>
+</ul>
+
+<%= will_paginate %>
+
+<% @products.each do |product| %>
+  <div class="row">
+    
+    <div class="col-md-2">
+      <section class="merchant_info center">
+        <%= link_to gravatar_for(product.merchant, size:100), merchant_path(product.merchant) %>
+        <h5>Store: <%= product.merchant.merchantname %></h5>
+      </section>
+    </div>
+    
+    <div class="col-md-6 well" >
+      <h4><%= link_to product.name, product_path(product) %></h4>
+      <p><%= product.summary %></p>
+      <p>
+        <span class='quiet'><small> created: <%= time_ago_in_words(product.created_at) %> ago, </small></span>
+        <span class='quiet'><small> updated: <%= time_ago_in_words(product.updated_at) %> ago</small></span>
+      </p>
+      
+      <div class="pull-right">
+        <%= link_to like_product_path(product, like: true), method: :post do %>
+          <i class="glyphicon glyphicon-thumbs-up"></i> &nbsp; <%= product.thumbs_up_total %>
+        <% end %> &nbsp;&nbsp;&nbsp;&nbsp;
+        <%= link_to like_product_path(product, like: false), method: :post do %>
+          <i class="glyphicon glyphicon-thumbs-down"></i> &nbsp; <%= product.thumbs_down_total %>
+        <% end %>
+      </div>
+      
+    </div>
+    
+    <div class="col-md-4">
+      <%= image_tag(product.picture.url, size: "250x150", class: "gravatar") if product.picture? %>
+    </div>
+    
+  </div>
+  <hr/>
+<% end %>
+
+<%= will_paginate %>

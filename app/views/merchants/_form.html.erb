@@ -1,10 +1,10 @@
-<%= render 'shared/errors', obj: @chef %>
+<%= render 'shared/errors', obj: @merchant %>
 
 <div class="row">
   <div class="well col-md-8 col-md-offset-2">
-    <%= form_for @chef do |f| %>
+    <%= form_for @merchant do |f| %>
       <%= f.label "Store Name" %>
-      <%= f.text_field :chefname %>
+      <%= f.text_field :merchantname %>
       
       <%= f.label :email %>
       <%= f.email_field :email %>
@@ -14,7 +14,7 @@
       
 
       
-      <%= f.submit(@chef.new_record? ? 'Register' : 'Update Store Profile', class: "btn btn-success") %>
+      <%= f.submit(@merchant.new_record? ? 'Register' : 'Update Store Profile', class: "btn btn-success") %>
     <% end %>
   </div>
 </div>
