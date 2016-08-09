@@ -86,6 +86,9 @@ body {
 
 .center {
   text-align: center;
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 h1, h2, h3, h4 {
@@ -222,6 +225,10 @@ section {
 
 .cc-errors {
   color: #d9534f;
+}
+
+.cc-row{
+  padding-left:30px;
 }
   
 
