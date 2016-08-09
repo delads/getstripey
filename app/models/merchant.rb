@@ -1,6 +1,7 @@
 class Merchant < ActiveRecord::Base
   has_many :products
   has_many :likes
+  has_one :stripe
   
   before_save { self.email = email.downcase }
   validates :merchantname, presence: true, length: {minimum: 3, maximum: 40 }

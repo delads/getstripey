@@ -1,8 +1,59 @@
-$navbar-default-bg: #545454;
+$navbar-default-bg: #FFFFFF;
 
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.merchant_items{
+  background: image-url('190_items_blank.png');
+  width: 70px;
+  height: 70px;
+  position: fixed;
+  text-align: center;
+  padding-top :15px;
+}
+
+
+.glyphicon {
+    font-size: 25px;
+}
+
+.bg {
+  background: url('/assets/images/bg_blueplane.jpg') no-repeat center center;
+  position: fixed;
+  width: 100%;
+  height: 350px; /*same height as jumbotron */
+  top:0;
+  left:0;
+  z-index: -1;
+}
+
+.white_pane {
+  background-color: #FFFFFF;
+}
+
+.grey_pane {
+  background-color: #EDEDED;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+}
+
+.product_header {
+  font-size: 1.4em;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+
+.jumbotron {
+  margin-bottom: 0px;
+  height: 350px;
+  color: white;
+  text-shadow: black 0.3em 0.3em 0.3em;
+  background:transparent;
+}
+
 
 #logo {
   margin-top: 10px;
@@ -24,6 +75,7 @@ $navbar-default-bg: #545454;
 
 body {
   padding-top: 80px;
+  background-color: #EDEDED;
 }
 
 .nav_item {
@@ -71,16 +123,26 @@ h2 {
 }
 
 .gravatar {
-  border-radius: 10px;
+  border-radius: 0px;
+}
+
+.image_preview {
+  border-radius: 0px;
+  border: 3px solid #ffffff;
+  margin-left: 5px;
+  margin-right: 5px;
+  
 }
 
 .well {
-  background-color: #EDEDED;
+  border: 7px solid #deefd1;
+  background-color : #ffffff; 
+  margin-top: 10px;
 }
 
 input, textarea, select, .uneditable-input {
   border: 1px solid #d2d2d2;
-  border-radius: 5px;
+  border-radius: 0px;
   width: 100%;
   margin-bottom: 15px;
 }
@@ -99,3 +161,68 @@ span.picture {
 .show_product {
   margin: 10px 10px 10px 10px;
 }
+
+.sell_on_stipey{
+  font-size: 1.1em;
+  margin-right: 15px;
+  margin-top: 30px;
+}
+
+.product_gallery {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
+  background-color: #EDEDED;
+}
+
+.merchant_gallery {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
+  background-color: #FFFFFF;
+}
+
+.gallery_h1 {
+  font-size: 1.1em;
+  background-color: #FFFFFF;
+  width: 250px;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+
+.gallery_h2 {
+  font-size: 1.0em;
+  background-color: #FFFFFF;
+  width: 250px;
+  color:#528b8b;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+
+
+.divider {
+    height:50px;
+}
+
+section {
+    height:500px;
+    padding-top:50px;
+    padding-bottom:50px;
+    overflow:auto;
+}
+
+.bg-1 {
+	background: image-url('bg_blueplane.jpg') no-repeat center center fixed;
+    color:#fff;
+    background-size:cover;
+    height: 400px; /*same height as jumbotron */
+}
+
+.cc-errors {
+  color: #d9534f;
+}
+  
+
+

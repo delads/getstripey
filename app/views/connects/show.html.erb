@@ -1,0 +1,40 @@
+<div class="container white_pane">
+  
+  <div class="row">
+  
+      <div class="col-md-6 product_header">
+        <%= link_to gravatar_for(@merchant, size:75), merchant_path(@merchant) %>
+        &nbsp;&nbsp;
+        <%= current_user.merchantname %>
+     </div>
+    </div>
+
+<br>
+
+  <ul class="nav nav-tabs">
+    <li>
+      <%= link_to "Products", merchant_path(@merchant) %>
+    </li>
+    <li>
+      <%= link_to "Your Profile", edit_merchant_path(@merchant) %>
+    </li>
+    <li class='active'>
+      <%= link_to "Payment Options", connect_path(@merchant) %>
+    </li>
+  </ul>
+  
+  <% if @connect == nil %>
+
+    <%= link_to authorize_path do %>
+    <%= image_tag "light-on-light@3x.png", class: "col-md-3 merchant_gallery" %>
+    <br>
+    <% end %>
+    
+  <% else %>
+    <br><br>
+    <h5>Using Stripe Connect - Standalone accounts with email - </h5> 
+    <%= @connect.email %><br>
+    <%= link_to "Disconnect from Stripe", "", class: "btn btn-warning btn-small", method: :delete,data: { confirm: "You sure?" } %>
+    <br><br><br>
+  <% end %>
+</div>

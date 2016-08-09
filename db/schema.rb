@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160731221102) do
+ActiveRecord::Schema.define(version: 20160806004758) do
+
+  create_table "connects", force: :cascade do |t|
+    t.string  "stripe_publishable_key"
+    t.string  "stripe_user_id"
+    t.string  "access_token"
+    t.integer "merchant_id"
+    t.string  "email"
+  end
 
   create_table "likes", force: :cascade do |t|
     t.boolean  "like"
@@ -37,6 +45,7 @@ ActiveRecord::Schema.define(version: 20160731221102) do
     t.datetime "updated_at"
     t.integer  "merchant_id"
     t.string   "picture"
+    t.float    "price"
   end
 
 end

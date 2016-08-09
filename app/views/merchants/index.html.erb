@@ -1,31 +1,16 @@
-<%= render 'shared/page_title', title: 'All Stores' %>
-
-<ul class="nav nav-tabs">
-  <li>
-    <%= link_to "Products", products_path %>
-  </li>
-  <li  class='active'>
-    <%= link_to "Stores", merchants_path %>
-  </li>
-</ul>
-
-
-<div class="row">
-  <div class="col-md-4 col-md-offset-4 center">
-    <%= will_paginate %>
-    
-  </div>
-</div>
-
-<% @merchants.each do |merchant| %>
+<div class="container white_pane">
   
   <div class="row">
-    <div class="col-md-4 col-md-offset-4 center">
-      <%= link_to gravatar_for(merchant, size: 200),merchant_path(merchant) %>
-      <p>
-        <h5>Store name: <%= merchant.merchantname %></h5>
-      </p>
-      
-    </div>
-  </div>
+    
+  <%  data = @account_list["data"] %>
+    
+  <% data.each do |key, array| %>
+  <%= "#{key}-----" %>
+  <%= array %>
+  <br><br>
 <% end %>
+    
+  </div>
+</div>  
+  
+    

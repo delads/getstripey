@@ -1,5 +1,5 @@
-<br><br>
 
+<!--
 <div class="center jumbotron">
   <h1>Welcome to Stripey</h1>
   <h2>Set up a Stripey store and start selling today!</h2>
@@ -9,17 +9,28 @@
   
 </div>
 
-<br><br>
+-->
+
+<section class="bg-1 text-center">
+  <h1>Whatever tickels your fancy, find it on Stripey</h1>
+  <p class="lead">Tools to help entrepreneurs sell online</p>
+</section>
 
 
-  <div class="row">
-  <div class="col-md-5"><h3 class="midrow">View products on the Stripey store</h3>
-  <h2 class="left">Browse and view products and sign up later. Get better deals when part of the club</h2>
-  <p><%= link_to "Browse Stripey Products", products_path, class: "btn btn-success btn-small" %></p></div>
+<div class="container">
+
+
+<% @products.each do |product| %>
+    
+    <div class="col-md-3 product_gallery" >
+      <%= link_to image_tag(product.picture.url, size: "250x200", class: "gravatar"), product_path(product.id) if product.picture? %>
+      <div class="gallery_h1", width:250 ><%= product.name %></div>
+      <div class="gallery_h2", width:250 ><%= truncate(product.summary, :length => 25) + " €" + number_with_precision(product.price, :precision => 2).to_s %></div>
+    </div>
+
+<% end %>
+
+
   
-  <div class="col-md-5 col-md-offset-2"><h3 class="midrow">Sign in to your account</h3>
-  <h2 class="left">Add/update your products. create reviews/like-dislike products and much much more!</h2>
-  <p><%= link_to "Log in to your account", login_path, class: "btn btn-success btn-small" %></p></div>
   
-
 </div>

@@ -1,6 +1,7 @@
+<div class="container">
 <%= render 'shared/errors', obj: @merchant %>
 
-<div class="row">
+<div class="row container">
   <div class="well col-md-8 col-md-offset-2">
     <%= form_for @merchant do |f| %>
       <%= f.label "Store Name" %>
@@ -17,4 +18,5 @@
       <%= f.submit(@merchant.new_record? ? 'Register' : 'Update Store Profile', class: "btn btn-success") %>
     <% end %>
   </div>
+</div>
 </div>

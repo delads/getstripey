@@ -9,12 +9,23 @@ Rails.application.routes.draw do
     end
   end
   
+  
+  
   resources :merchants, except: [:new] 
+  resources :connects
+  
+  get '/authorize', to: 'connects#authorize'
+  get '/disconnect', to: 'connects#disconnect'
+  post '/webhook', to: 'connects#webhook'
   
   get '/register', to: 'merchants#new'
   
   get '/login', to: "logins#new"
   post '/login', to: "logins#create"
   get '/logout', to: "logins#destroy"
+  
+  post '/pay', to: "products#pay"
+  
+  
   
 end

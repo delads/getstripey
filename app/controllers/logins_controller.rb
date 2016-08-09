@@ -9,7 +9,7 @@ class LoginsController < ApplicationController
     if merchant && merchant.authenticate(params[:password])
       session[:merchant_id] = merchant.id
       flash[:success] = "You are logged in"
-      redirect_to products_path
+      redirect_to merchant_path(merchant)
       
     else
       

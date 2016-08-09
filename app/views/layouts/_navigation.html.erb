@@ -1,42 +1,31 @@
 <header class="navbar navbar-fixed-top navbar-default">
+  
   <div class="container">
     <%= link_to "Stripey", root_path, class: "btn btn-lg btn-primary", id: "logo" %>
-    
-    
-    <!-- <div class="nav_item">
-      <%= link_to "Link 1", "" , class: "btn btn-default btn-warning" %>
-    </div>
-    <div class="nav_item">
-      <%= link_to "link 1", "", class: "btn btn-default btn-warning" %>
-    </div>
-    
-    -->
-    
+
     <div class="pull-right">
+        
         <% if logged_in? %>
+        
           <div class="nav_item">
-            <%= link_to "New Product", new_product_path, class: "btn btn-default btn-default" %>
+          <%= link_to '', merchant_path(current_user), class: "glyphicon glyphicon-cog" %>
           </div>
-          
-          <ul class="nav_item">
-            <li class="dropdown">
-              <%= link_to '#', class: "btn btn-default btn-default dropdown-toggle", "data-toggle" => "dropdown" do %>
-                <%= current_user.merchantname %><b class="caret"></b>
-              <% end %>
-              <ul class='dropdown-menu'>
-                <li><%= link_to "View Profile", merchant_path(current_user) %></li>
-                <li><%= link_to "Edit Profile", edit_merchant_path(current_user) %></li>
-                <li class="divider"></li>
-                <li><%= link_to "Logout", logout_path %></li>
-              </ul>
-            </li>
-          </ul>
+           <div class="nav_item">
+          <%= link_to '', root_path, class: "glyphicon glyphicon-home" %>
+          </div> 
+           <div class="nav_item">
+          <%= link_to "Sign out", logout_path, class: "btn btn-default"%>
+          </div>
+        
         <% else %>
           <div class="nav_item">
-            <%= link_to "Log in", login_path, class: "btn btn-default btn-success"%>
+            <%= link_to "Sell on Stripey", register_path, class: "sell_on_stipey" %>
+          </div>
+          <div class="nav_item">
+            <%= link_to "Sign in", login_path, class: "btn btn-default"%>
           </div>
         <% end %>
-    </div>
-
-  </div>
+        
+    </div> <!-- End pull-right  -->
+  </div> <!-- End container -->
 </header>

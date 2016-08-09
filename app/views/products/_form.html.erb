@@ -1,3 +1,4 @@
+<div class="container">
 <%= render 'shared/errors', obj: @product %>
 
 <div class="row">
@@ -12,6 +13,9 @@
       <%= f.label :description %>
       <%= f.text_area :description, rows: 10 %>
       
+      <%= f.label :price %>
+      <%= f.text_field :price %>
+      
       <span class="picture">
         <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png' %>
       </span>
@@ -19,6 +23,7 @@
       <%= f.submit(@product.new_record? ? 'Create Product Listing' : 'Edit Product Listing', class: "btn btn-success") %>
     <% end %>
   </div>
+</div>
 </div>
 
 <script type="text/javascript">

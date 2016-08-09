@@ -4,6 +4,13 @@ class MerchantsController < ApplicationController
   
   def index
    @merchants = Merchant.paginate(page:params[:page], per_page: 3)
+   require "stripe"
+    Stripe.api_key = "sk_test_KNQxI3UCqUgrZIA5sK2cLvM9"
+
+    @account_list = Stripe::Account.list(:limit => 10)
+
+    
+
   end
   
   def new 
@@ -35,7 +42,8 @@ class MerchantsController < ApplicationController
   end
   
   def show
-    @products = @merchant.products.paginate(page: params[:page], per_page: 3)
+    #@products = @merchant.products.paginate(page: params[:page], per_page: 3)
+    @products = @merchant.products
   end
   
   

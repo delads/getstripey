@@ -1,3 +1,30 @@
-<%= render 'shared/page_title', title: 'Edit your store profile' %>
+<div class="container white_pane">
+  
+  <div class="row">
+  
+      <div class="col-md-6 product_header">
+        <%= link_to gravatar_for(@merchant, size:75), merchant_path(@merchant) %>
+        &nbsp;&nbsp;
+        <%= @merchant.merchantname %>
+     </div>
+    </div>
 
-<%= render 'form' %>
+<br>
+
+  <ul class="nav nav-tabs">
+    <li>
+      <%= link_to "Products", merchant_path(@merchant) %>
+    </li>
+    <% if logged_in? and @merchant == current_user %>
+    <li  class='active'>
+      <%= link_to "Your Profile", edit_merchant_path(@merchant) %>
+    </li>
+    <li>
+      <%= link_to "Payment Options", connect_path(@merchant) %>
+    </li>
+    <% end %>
+  </ul>
+  
+  <%= render 'form' %>
+
+</div>
