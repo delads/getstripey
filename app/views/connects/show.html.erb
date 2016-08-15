@@ -31,10 +31,29 @@
     <% end %>
     
   <% else %>
-    <br><br>
-    <h5>Using Stripe Connect - Standalone accounts with email - </h5> 
-    <%= @connect.email %><br>
-    <%= link_to "Disconnect from Stripe", "", class: "btn btn-warning btn-small", method: :delete,data: { confirm: "You sure?" } %>
-    <br><br><br>
+    
+    <div class="col-md-3 merchant_gallery">
+    <%= link_to "Disconnect from Stripe", "", class: "btn btn-warning btn-small ", method: :delete,data: { confirm: "You sure?" } %>
+    </div>
+    
+    <div class="well col-md-6">
+    <h4>Standalone Account Details</h4>
+    
+    <% if @stripe_account != nil %>
+      <ul class="list-group">
+      <li class="list-group-item">id: <%= @stripe_account.id %> </li>
+      <li class="list-group-item">business_name: <%= @stripe_account.business_name %> </li>
+      <li class="list-group-item">business_url: <%= @stripe_account.business_url %> </li>
+      <li class="list-group-item">charges_enabled: <%= @stripe_account.charges_enabled %> </li>
+      <li class="list-group-item">country: <%= @stripe_account.country %> </li>
+      <li class="list-group-item">default_currency: <%= @stripe_account.default_currency %> </li>
+      <li class="list-group-item">details_submitted: <%= @stripe_account.details_submitted %> </li>
+      <li class="list-group-item">display_name: <%= @stripe_account.display_name %> </li>
+      <li class="list-group-item">email: <%= @stripe_account.email %> </li>
+
+    
+    <% end %>
+    </div>
+    
   <% end %>
 </div>

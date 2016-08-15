@@ -2,6 +2,17 @@ class ConnectsController < ApplicationController
   before_action :set_merchant
   before_action :set_connect
   before_action :configure_connect
+  
+  def show
+    Stripe.api_key = @api_key
+    begin
+      @stripe_account = Stripe::Account.retrieve(@connect.stripe_user_id)
+    rescue Exception => exc
+      @stripe_account = nil
+      #do nothing
+      #flash[:danger] = exc.message
+    end
+  end
  
   def authorize
     params = {
@@ -45,7 +56,81 @@ class ConnectsController < ApplicationController
   
   def destroy
 
-    is_destroyed = Connect.where("merchant_id = ?",session[:merchant_id]).destroy_all
+    Stripe.api_key = @api_key
+    
+     connect = Connect.where("merchant_id = ?",session[:merchant_id]).first
+     @stripe_user_id = connect.stripe_user_id
+     is_destroyed = connect.destroy
+     
+    Rails.logger.debug("ConnectsController: @stripe_user_id  = " + @stripe_user_id )
+    
+    #Let's now also disconnect from Stripe on their side
+    #uri = URI('https://connect.stripe.com/oauth/deauthorize')
+    #req = Net::HTTP::Post.new(uri)
+    #req.set_form_data('client_id' => @client_id, 'stripe_user_id' => @stripe_user_id)
+    
+    #res = Net::HTTP.start(uri.hostname, uri.port,
+    #:use_ssl => uri.scheme == 'https') do |http|
+    #  http.request(req)
+    #  Rails.logger.debug("ConnectsController: Request to Stripe  = " + uri.to_s )
+    #  Rails.logger.debug("ConnectsController: Response from disconnecting Connected account from Stripe  = " + res.value )
+    #end
+    
+    #http = Net::HTTP.new('connect.stripe.com', 443)
+    #http.use_ssl = true
+    #path(a.k.a) ->www.mysite.com/some_POST_handling_script.rb'
+    #path = '/oauth/deauthorize'
+    #data = 'client_id=' + @client_id + '&stripe_user_id=' + @stripe_user_id
+    
+    #headers = {'Content-Type'=> 'application/x-www-form-urlencoded'}
+
+    #resp = http.post(path, data, headers)
+    
+    #Rails.logger.debug( 'Code = ' + resp.code )
+    #Rails.logger.debug( 'Message = ' + resp.message )
+    
+    
+    #uri = URI.parse("https://connect.stripe.com/oauth/deauthorize")
+    #https = Net::HTTP.new(uri.host,uri.port)
+    #https.use_ssl = true
+    #req = Net::HTTP::Post.new(uri.path)
+    #req['client_id'] = @client_id
+    #req['stripe_user_id'] = @stripe_user_id
+    #res = https.request(req)
+    
+    #params = {'client_id' => @client_id,
+    #            'stripe_user_id' => @stripe_user_id
+    #        }
+    #uri = URI('https://connect.stripe.com/oauth/deauthorize')
+    #https = Net::HTTP.new(uri.host,uri.port)
+    #https.use_ssl = true
+    #res = https.post_form(uri, params)
+    #puts res.body
+    
+    #uri = URI('https://connect.stripe.com/oauth/deauthorize')
+    #res = Net::HTTP.post_form(uri, 'client_id' => @client_id, 'stripe_user_id' => @stripe_user_id, 'client_secret' => @api_key)
+    #puts res.body
+
+    #Rails.logger.debug("ConnectsController: Request to Stripe  = " + uri.to_s )
+    #Rails.logger.debug("ConnectsController: Response from disconnecting Connected account from Stripe  = " + res.value )
+    
+    
+    http = Net::HTTP.new('connect.stripe.com', 443)
+    http.use_ssl = true
+    #path(a.k.a) ->www.mysite.com/some_POST_handling_script.rb'
+    path = '/oauth/deauthorize'
+    data = 'client_id=' + @client_id + '&stripe_user_id=' + @stripe_user_id + '&client_secret=' + @api_key
+    
+    headers = {'Content-Type'=> 'application/x-www-form-urlencoded'}
+
+    resp = http.post(path, data, headers)
+    
+    Rails.logger.debug( 'Code = ' + resp.code )
+    Rails.logger.debug( 'Message = ' + resp.message )
+    puts resp.body
+    
+
+
     redirect_to connect_path(@merchant)
      
    if is_destroyed
@@ -60,6 +145,8 @@ class ConnectsController < ApplicationController
     connect = Connect.where("stripe_user_id = ?",params[:user_id]).first
     merchant = connect.merchant_id
     is_destroyed = connect.destroy
+    
+    
 
     redirect_to connect_path(merchant)
      
@@ -76,6 +163,9 @@ class ConnectsController < ApplicationController
   def webhook
     Rails.logger.debug("ConnectsController: Webhook called with user_id = " + params[:user_id] )
     Connect.where("stripe_user_id = ?",params[:user_id]).destroy_all
+    
+    status 200
+    
   end
 
   
@@ -93,7 +183,7 @@ class ConnectsController < ApplicationController
       config = YAML::load(File.open('config/secrets.yml'))
       
       @api_key = config['api_key']
-      client_id = config['client_id']
+      @client_id = config['client_id']
   
       options = {
         :site => 'https://connect.stripe.com',
@@ -101,6 +191,6 @@ class ConnectsController < ApplicationController
         :token_url => '/oauth/token'
       }
   
-      @client = OAuth2::Client.new(client_id, @api_key, options)
+      @client = OAuth2::Client.new(@client_id, @api_key, options)
     end
 end  
