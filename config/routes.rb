@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   
   resources :merchants, except: [:new] 
   resources :connects
+  resources :jsons
   
   get '/authorize', to: 'connects#authorize'
   get '/disconnect', to: 'connects#disconnect'
