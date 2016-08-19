@@ -4,6 +4,34 @@ class ProductsController < ApplicationController
   before_action :set_merchant, only: [:show]
   #skip_before_action :verify_authenticity_token, only: [:pay]
   
+  def payandroid
+    @product = Product.find(params[:product_id])
+    @connect = Connect.where("merchant_id = ?",@product.merchant).first
+    
+    Rails.logger.debug("ProductsController: #{@connect.inspect}")
+    Rails.logger.debug("ProductsController: #{params}")
+    
+    
+    Stripe.api_key = "sk_test_KNQxI3UCqUgrZIA5sK2cLvM9"
+    token = params[:stripeToken]
+    # Create the charge on Stripe's servers - this will charge the user's card
+    
+    message = "success"
+    
+    begin
+        Stripe::Charge.create({
+        :amount => (@product.price*100).to_i,
+        :currency => "eur",
+        :source => token,
+        :application_fee => 100 # amount in cents
+      }, {:stripe_account => @connect.stripe_user_id })
+      
+    rescue Stripe::CardError => e
+      message = e.to_s
+    end
+    
+      render :json => message.to_json
+  end
   
   def pay
 
@@ -22,7 +50,7 @@ class ProductsController < ApplicationController
         :currency => "eur",
         :source => token,
         :application_fee => 100 # amount in cents
-      }, {:stripe_account => "acct_18fFClKtyHXC0lP5" })
+      }, {:stripe_account => @connect.stripe_user_id })
 
       flash[:success] = "Product purchased"
       redirect_to root_path

@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get '/logout', to: "logins#destroy"
   
   post '/pay', to: "products#pay"
+  post '/payandroid', to: "products#payandroid"
   
   
   
