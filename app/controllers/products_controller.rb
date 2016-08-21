@@ -93,6 +93,26 @@ class ProductsController < ApplicationController
     end
   end
   
+  def pay_braintree_android
+    
+    amount = params["amount"] # In production you should not take amounts directly from clients
+    nonce = params["payment_method_nonce"]
+
+    result = Braintree::Transaction.sale(
+      amount: amount,
+      payment_method_nonce: nonce,
+    )
+
+    if result.success? || result.transaction
+      render :json => "Product purchased through Braintree =("
+    else
+      error_messages = result.errors.map { |error| "Error: #{error.code}: #{error.message}" }
+       render :json => error_messages
+    end
+  end
+  
+  
+  
   
   
   def destroy

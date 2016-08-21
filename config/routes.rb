@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   post '/pay', to: "products#pay"
   post '/payandroid', to: "products#payandroid"
   post '/pay_braintree', to: "products#pay_braintree"
+  post '/paybraintreeandroid', to: "products#pay_braintree_android"
   
   get '/getbraintreetoken', to: "products#getbraintreetoken"
 
