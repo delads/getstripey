@@ -123,6 +123,13 @@ class ProductsController < ApplicationController
     
   end
   
+  def getbraintreetoken
+    #Let's kickoff with a braintree token
+    token = Braintree::ClientToken.generate
+    render :json => token.to_s
+    
+  end
+  
   def new
     @product = Product.new
 

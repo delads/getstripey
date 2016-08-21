@@ -1,1 +1,2 @@
-Site for testing and demoing the Stripe Connect Platform. 
+Environment for testing and demoing the Stripe Connect Platform. 
+
