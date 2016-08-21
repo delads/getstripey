@@ -1,10 +1,11 @@
 class ConnectsController < ApplicationController
+  before_action :set_env
   before_action :set_merchant
   before_action :set_connect
   before_action :configure_connect
   
   def show
-    Stripe.api_key = @api_key
+    Stripe.api_key = @stripe_secret_api_key
     begin
       @stripe_account = Stripe::Account.retrieve(@connect.stripe_user_id)
     rescue Exception => exc
@@ -37,7 +38,7 @@ class ConnectsController < ApplicationController
    connect.access_token = stripe_response.token
    
    #Let's get the email associated with this Stripe account
-   Stripe.api_key = @api_key
+   Stripe.api_key = @stripe_secret_api_key
    account = Stripe::Account.retrieve(stripe_user_id)
    connect.email = account["email"]
 
@@ -56,7 +57,7 @@ class ConnectsController < ApplicationController
   
   def destroy
 
-    Stripe.api_key = @api_key
+    Stripe.api_key = @stripe_secret_api_key
     
      connect = Connect.where("merchant_id = ?",session[:merchant_id]).first
      @stripe_user_id = connect.stripe_user_id
@@ -119,7 +120,7 @@ class ConnectsController < ApplicationController
     http.use_ssl = true
     #path(a.k.a) ->www.mysite.com/some_POST_handling_script.rb'
     path = '/oauth/deauthorize'
-    data = 'client_id=' + @client_id + '&stripe_user_id=' + @stripe_user_id + '&client_secret=' + @api_key
+    data = 'client_id=' + @stripe_client_id + '&stripe_user_id=' + @stripe_user_id + '&client_secret=' + @stripe_secret_api_key
     
     headers = {'Content-Type'=> 'application/x-www-form-urlencoded'}
 
@@ -179,11 +180,13 @@ class ConnectsController < ApplicationController
       @connect = Connect.where("merchant_id = ?",session[:merchant_id]).first
     end
     
+    
+    
     def configure_connect
-      config = YAML::load(File.open('config/secrets.yml'))
+     # config = YAML::load(File.open('config/secrets.yml'))
       
-      @api_key = config['api_key']
-      @client_id = config['client_id']
+     #  @api_key = config['api_key']
+    # @client_id = config['client_id']
   
       options = {
         :site => 'https://connect.stripe.com',
@@ -191,6 +194,13 @@ class ConnectsController < ApplicationController
         :token_url => '/oauth/token'
       }
   
-      @client = OAuth2::Client.new(@client_id, @api_key, options)
+      @client = OAuth2::Client.new(@stripe_client_id, @stripe_secret_api_key, options)
+    end
+    
+    
+    private def set_env
+      @stripe_secret_api_key = ENV['STRIPE_SECRET_API_KEY_TEST']
+      @stripe_publishable_api_key = ENV['STRIPE_PUBLISHABLE_API_KEY_TEST']
+      @stripe_client_id = ENV['STRIPE_CLIENT_ID_TEST']
     end
 end  

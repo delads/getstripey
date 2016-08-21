@@ -53,39 +53,48 @@
               
         <div class="well" >
           <form action="/pay" method="POST" id="payment-form">
-          <table>
-          
-            <tr>
-              <td align="left" colspan="3">
-                <h4>Credit card details</h4>
-              </td>
-            </tr>
-          
-            <tr><td colspan="3">
-                  <span class="payment-errors alert-danger">
-            </td></tr>
-            <tr><td colspan="2">
-              <input type="text" data-stripe="number" placeholder="Card number" style="width: 150px;">
-            </td><td></tr>
-            <tr><td width="25%"><input type="text" style="width: 69px;" data-stripe="exp" placeholder="MM/YY">
-              </td>
-              <td width="25%"><input type="text" style="width: 69px;" data-stripe="cvc" placeholder="CVC">
-              </td>
-            </tr>
-            <tr><td colspan="2">
+            <table>
+              <tr>
+                <td align="left" colspan="3">
+                  <h2>Pay through Stripe</h2>
+                </td>
+              </tr>
+              <tr><td colspan="3">
+                    <span class="payment-errors alert-danger">
               </td></tr>
-          </table>
-          <input type="hidden" name="product_id" value= "<%= @product.id.to_s %>" />
-          <input type="submit" class="btn btn-success" value= " <%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
-            
+              <tr><td colspan="2">
+                <input type="text" data-stripe="number" placeholder="Card number" style="width: 150px;">
+              </td><td></tr>
+              <tr><td width="25%"><input type="text" style="width: 69px;" data-stripe="exp" placeholder="MM/YY">
+                </td>
+                <td width="25%"><input type="text" style="width: 69px;" data-stripe="cvc" placeholder="CVC">
+                </td>
+              </tr>
+              <tr><td colspan="2">
+                </td></tr>
+            </table>
+            <input type="hidden" name="product_id" value= "<%= @product.id.to_s %>" />
+            <input type="submit" class="btn btn-success" value= " <%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
+          </form>
+        </div> <!-- end of the well  -->
+          
+        <div class="well"> 
+          <h2>Pay through Braintree</h2>
+            <form id="checkout" method="post" action="/pay_braintree">
+            <div id="braintree-payment-form"></div>
+            <input type="hidden" name="amount" value= "<%= @product.price %>" />
+            <input type="submit"class="btn btn-danger" value="<%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
+          </form>
         </div>
 
 
         <% else %>
-          <h5>Merchant not connected to payment processor</h5>
+          <div class="well"><h5>Merchant not connected to payment processor</h5></div>
         <% end %>
-   
-      </div> <!-- end of well  -->
+        
+
+
+
     </div> <!-- end of col-md-6 -->
   </div> <!-- end of row -->
 
@@ -110,3 +119,14 @@
   </div><!-- end row -->
 </div><!-- end container -->
 
+
+
+<script src="https://js.braintreegateway.com/js/braintree-2.20.0.min.js"></script>
+
+<script>
+
+  var clientToken="<%= @braintree_client_token %>";
+    braintree.setup(clientToken, "dropin", {
+      container: "braintree-payment-form"
+    });
+</script>

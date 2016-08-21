@@ -1,11 +1,14 @@
 class MerchantsController < ApplicationController
+  before_action :set_env
   before_action :set_merchant, only: [:edit, :update, :show]
   before_action :require_same_user, only: [:edit, :update]
+  
   
   def index
    @merchants = Merchant.paginate(page:params[:page], per_page: 3)
    require "stripe"
-    Stripe.api_key = "sk_test_KNQxI3UCqUgrZIA5sK2cLvM9"
+  
+   Stripe.api_key = @stripe_secret_api_key
 
     @account_list = Stripe::Account.list(:limit => 10)
 
@@ -61,6 +64,12 @@ class MerchantsController < ApplicationController
         flash[:danger] = "You can only edit your own profile"
         redirect_to root_path
       end
+    end
+    
+    private def set_env
+      @stripe_secret_api_key = ENV['STRIPE_SECRET_API_KEY_TEST']
+      @stripe_publishable_api_key = ENV['STRIPE_PUBLISHABLE_API_KEY_TEST']
+      @stripe_client_id = ENV['STRIPE_CLIENT_ID_TEST']
     end
 
 end

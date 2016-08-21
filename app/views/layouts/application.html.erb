@@ -4,6 +4,7 @@
   <title>GetStripey</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= favicon_link_tag "favicon.png" %>
   <%= csrf_meta_tags %>
   
 
@@ -18,13 +19,16 @@
     <%= render 'layouts/footer' %> 
     
 
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+
+
+
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script type="text/javascript">
-  
     
     $(function() {
   
-    Stripe.setPublishableKey('pk_test_eEaAgIXINXVLsw2Tyonp8y9g');
+    Stripe.setPublishableKey('<%= @stripe_publishable_api_key  %>');
     
     var $form = $('#payment-form');
     $form.submit(function(event) {

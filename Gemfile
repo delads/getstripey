@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-
+# for Braintree
+# ruby '2.0.0'
 
 gem 'rails', '4.2.1'
 gem 'bootstrap-sass', '~> 3.3.6'
@@ -21,6 +22,12 @@ gem 'net-ssh'
 gem 'oauth2'
 gem 'stripe'
 
+  # for Braintree
+gem 'braintree', '~> 2.47'
+# gem 'dotenv', '~> 2.0'
+gem 'dotenv-rails'
+
+
 
 group :development, :test do
   gem 'sqlite3'
@@ -29,6 +36,9 @@ group :development, :test do
 
   gem 'web-console', '~> 2.0'
   gem 'spring'
+  
+  # for Braintree
+  gem 'rspec-rails'
 end
 
 

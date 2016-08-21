@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :merchants, except: [:new] 
   resources :connects
   resources :jsons
+  resources :checkouts,  only: [:new, :create, :show]
   
   get '/authorize', to: 'connects#authorize'
   get '/disconnect', to: 'connects#disconnect'
@@ -27,6 +28,7 @@ Rails.application.routes.draw do
   
   post '/pay', to: "products#pay"
   post '/payandroid', to: "products#payandroid"
+  post '/pay_braintree', to: "products#pay_braintree"
   
   
   

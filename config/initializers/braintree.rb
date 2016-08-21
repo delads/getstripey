@@ -1,0 +1,4 @@
+BT_ENVIRONMENT='sandbox'
+BT_MERCHANT_ID='83m4zdv7c9wt4g2h'
+BT_PUBLIC_KEY='zqzf3p5j8m6rv9td'
+BT_PRIVATE_KEY='d4f5f2c1cbd61633abdaabbd6baedd59'
