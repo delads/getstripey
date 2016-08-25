@@ -25,7 +25,7 @@ class MerchantsController < ApplicationController
     if @merchant.save
       flash[:success] = "Your account has been created successfully"
       session[:merchant_id] = @merchant.id
-      redirect_to products_path
+      redirect_to merchant_path(@merchant)
     else
       render 'new'
     end

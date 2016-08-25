@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:edit, :update, :show, :like, :destroy]
   before_action :require_same_user, only: [:edit, :update]
-  before_action :set_merchant, only: [:show]
+  before_action :set_merchant, only: [:show, :destroy]
   before_action :set_env
   #skip_before_action :verify_authenticity_token, only: [:pay]
   
@@ -118,7 +118,7 @@ class ProductsController < ApplicationController
   def destroy
     Product.find(params[:id]).destroy
     flash[:success] = "Product deleted"
-    redirect_to merchants_path
+    redirect_to merchant_path(@merchant)
   end
 
   def index
@@ -162,7 +162,7 @@ class ProductsController < ApplicationController
     
     if @product.save
       flash[:success] = "Your product was uploaded successfully!"
-      redirect_to merchants_path
+      redirect_to merchant_path(current_user)
       
     else
       render :new
