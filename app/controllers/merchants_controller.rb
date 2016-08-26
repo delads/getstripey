@@ -6,7 +6,7 @@ class MerchantsController < ApplicationController
   
   
   def index
-   @merchants = Merchant.paginate(page:params[:page], per_page: 2)
+   @merchants = Merchant.all
    require "stripe"
   
    Stripe.api_key = @stripe_secret_api_key

@@ -2,8 +2,7 @@
   
   
   <div class="row">
-    <% will_paginate @merchants  %>
-    
+ 
     <% @merchants.each do |merchant| %>
     <div class="h4" ><%= merchant.merchantname %></div>
     <div class="h5" ><%= merchant.email %></div>
