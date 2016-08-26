@@ -2,10 +2,11 @@ class MerchantsController < ApplicationController
   before_action :set_env
   before_action :set_merchant, only: [:edit, :update, :show]
   before_action :require_same_user, only: [:edit, :update]
+  before_action :require_admin_user, only: [:index]
   
   
   def index
-   @merchants = Merchant.paginate(page:params[:page], per_page: 3)
+   @merchants = Merchant.paginate(page:params[:page], per_page: 2)
    require "stripe"
   
    Stripe.api_key = @stripe_secret_api_key
@@ -63,6 +64,13 @@ class MerchantsController < ApplicationController
       if current_user != @merchant
         flash[:danger] = "You can only edit your own profile"
         redirect_to root_path
+      end
+    end
+    
+    def require_admin_user
+      if current_user.merchantname != 'admin'
+        flash[:danger] = "Log in as admin to view this page"
+        redirect_to login_path
       end
     end
     

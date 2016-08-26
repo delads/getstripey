@@ -1,5 +1,17 @@
 <div class="container white_pane">
   
+  
+  <div class="row">
+    <% will_paginate @merchants  %>
+    
+    <% @merchants.each do |merchant| %>
+    <div class="h4" ><%= merchant.merchantname %></div>
+    <div class="h5" ><%= merchant.email %></div>
+    <br>
+  <% end %>
+  
+  </div>
+  
   <div class="row">
     
   <%  data = @account_list["data"] %>
