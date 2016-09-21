@@ -46,6 +46,7 @@ class ProductsController < ApplicationController
       render :json => message.to_json
   end
   
+  
   def pay
 
     @product = Product.find(params[:product_id])
@@ -139,7 +140,7 @@ class ProductsController < ApplicationController
     @braintree_client_token = Braintree::ClientToken.generate
     
     #Let's make the Stripe user token available also (testing if this should be the platform or the user)
-    #@stripe_user_publishable_api_key = @connect.stripe_publishable_key
+    @stripe_user_publishable_api_key = @connect.stripe_publishable_key
     
   end
   

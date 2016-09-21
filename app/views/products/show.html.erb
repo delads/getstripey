@@ -1,4 +1,93 @@
 
+
+  <script type="text/javascript">
+    
+    $(function() {
+  
+    Stripe.setPublishableKey('<%= @stripe_user_publishable_api_key  %>');
+    
+    var $form = $('#payment-form');
+    $form.submit(function(event) {
+      // Disable the submit button to prevent repeated clicks:
+      $form.find('.submit').prop('disabled', true);
+  
+      // Request a token from Stripe:
+      Stripe.card.createToken($form, stripeResponseHandler);
+      
+      // Prevent the form from being submitted:
+      return false;
+    });
+  });
+  
+    function stripeResponseHandler(status, response) {
+    // Grab the form:
+    var $form = $('#payment-form');
+  
+    if (response.error) { // Problem!
+  
+      // Show the errors on the form:
+      $form.find('.payment-errors').text(response.error.message);
+      $form.find('.submit').prop('disabled', false); // Re-enable submission
+  
+    } else { // Token was created!
+  
+      // Get the token ID:
+      var token = response.id;
+  
+      // Insert the token ID into the form so it gets submitted to the server:
+      $form.append($('<input type="hidden" name="stripeToken">').val(token));
+  
+      // Submit the form:
+      $form.get(0).submit();
+    }
+  };
+  
+
+</script>
+
+  <script type="text/javascript">
+  
+  Stripe.applePay.checkAvailability(function(available) {
+  if (available) {
+    document.getElementById("apple-pay-button").style.display = 'block';
+  }
+});
+
+  document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);
+  
+  
+  function beginApplePay() {
+    var paymentRequest = {
+      countryCode: 'FR',
+      currencyCode: 'EUR',
+      total: {
+        label: '<%= @product.name %>',
+        amount: '<%= @product.price %>'
+      }
+    };
+    
+    var session = Stripe.applePay.buildSession(paymentRequest,
+    function(result, completion) {
+
+    $.post('/pay', { stripeToken: result.token.id, product_id: <%= @product.id.to_s %> }).done(function() {
+      completion(ApplePaySession.STATUS_SUCCESS);
+      // You can now redirect the user to a receipt page, etc.
+      window.location.href = '/';
+    }).fail(function() {
+      completion(ApplePaySession.STATUS_FAILURE);
+    });
+
+  }, function(error) {
+    console.log(error.message);
+  });
+
+  session.begin();
+  }
+
+ 
+</script> 
+
+  
   
 <div class="container white_pane">
   
@@ -85,11 +174,31 @@
             <input type="submit"class="btn btn-danger" value="<%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
           </form>
         </div>
+        
+        <div class="well">
+          <style>
+            #apple-pay-button {
+              display: none;
+              background-image: -webkit-named-image(apple-pay-logo-black);
+              background-size: 100% 100%;
+              background-origin: content-box;
+              background-repeat: no-repeat;
+              width: 100%;
+              height: 44px;
+              border: 1px solid black;
+              padding: 10px 0;
+              border-radius: 10px;
+            }
+          </style>
+          <button id="apple-pay-button" onclick="beginApplePay()"></button>
+        </div>
 
 
         <% else %>
           <div class="well"><h5>Merchant not connected to payment processor</h5></div>
         <% end %>
+        
+
         
 
 
