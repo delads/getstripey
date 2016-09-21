@@ -4,7 +4,7 @@
     
     $(function() {
   
-    Stripe.setPublishableKey('<%= @stripe_user_publishable_api_key  %>');
+    Stripe.setPublishableKey('<%= @stripe_publishable_api_key  %>');
     
     var $form = $('#payment-form');
     $form.submit(function(event) {
