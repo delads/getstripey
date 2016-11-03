@@ -45,6 +45,8 @@ class ProductsController < ApplicationController
     
       render :json => message.to_json
   end
+
+  
   
   
   def pay
