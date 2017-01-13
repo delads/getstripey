@@ -23,20 +23,21 @@
 
 
 
-
-
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-
-  
   <script src="https://js.braintreegateway.com/js/braintree-2.20.0.min.js"></script>
 
-<script>
+  <script>
+  
+    var clientToken="<%= @braintree_client_token %>";
+      braintree.setup(clientToken, "dropin", {
+        container: "braintree-payment-form"
+      });
+  </script>
 
-  var clientToken="<%= @braintree_client_token %>";
-    braintree.setup(clientToken, "dropin", {
-      container: "braintree-payment-form"
-    });
-</script>
+  
+
+  
+
 
 </body>
 </html>

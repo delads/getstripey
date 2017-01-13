@@ -20,7 +20,7 @@ gem 'bcrypt', '3.1.7'
 gem 'fog', '1.23.0'
 gem 'net-ssh'
 gem 'oauth2'
-gem 'stripe'
+gem 'stripe', '1.57.1'
 
   # for Braintree
 gem 'braintree', '~> 2.47'

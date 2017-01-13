@@ -18,6 +18,12 @@ $navbar-default-bg: #FFFFFF;
     font-size: 25px;
 }
 
+.waiting {
+  background: image-url('progress.gif') no-repeat center center fixed;
+  width: 70px;
+  height: 70px;
+}
+
 .bg {
   background: url('/assets/images/bg_blueplane.jpg') no-repeat center center;
   position: fixed;

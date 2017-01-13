@@ -64,16 +64,60 @@ class ProductsController < ApplicationController
    # binding.pry
     
     # Create the charge on Stripe's servers - this will charge the user's card
-        Stripe::Charge.create({
-        :amount => (@product.price*100).to_i,
-        :currency => "eur",
-        :source => token,
-        :application_fee => 100 # amount in cents
-      }, {:stripe_account => @connect.stripe_user_id })
+        Stripe::Charge.create(
+        {:amount => (@product.price*100).to_i,
+         :currency => "eur",
+         :source => token,
+         :application_fee => 100}, # amount in cents
+        {:stripe_account => @connect.stripe_user_id} )
 
       flash[:success] = "Product purchased"
       redirect_to root_path
   end
+  
+    def pay_ideal
+
+    @product = Product.find(params[:product_id])
+    @connect = Connect.where("merchant_id = ?",@product.merchant).first
+    
+    Rails.logger.debug("ProductsController: #{@connect.inspect}")
+    Rails.logger.debug("ProductsController: #{params}")
+
+ 
+    Stripe.api_key = @stripe_secret_api_key
+    token = params[:stripeToken]
+    customer_name = params[:customer_name]
+    customer_return_url = url_for("http://" + request.host + "/confirmation") 
+    
+   # binding.pry
+    
+    
+    
+    # Create the charge on Stripe's servers - this will charge the user's card
+    #    Stripe::Charge.create({
+    #    :amount => (@product.price*100).to_i,
+    #    :currency => "eur",
+    #    :source => token,
+    #    :application_fee => 100 # amount in cents
+    #  }, {:stripe_account => @connect.stripe_user_id })
+
+    source = Stripe::Source.create({
+    amount: (@product.price*100).to_i,
+    currency: 'eur',
+    type: 'ideal',
+    owner: {name: customer_name},
+    metadata: {product_id: @product.id.to_s},
+    redirect: {return_url: customer_return_url + '?id=' + @product.id.to_s,},
+    ideal: {statement_descriptor: 'ORDER AT11990'}},
+    {stripe_account: @connect.stripe_user_id})
+    
+    redirect_url = source.redirect.url
+    redirect_to redirect_url
+
+  end
+
+  
+  
   
   def pay_braintree
     

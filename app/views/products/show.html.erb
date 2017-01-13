@@ -1,5 +1,6 @@
 
   
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
   <script type="text/javascript">
     
@@ -37,82 +38,84 @@
   
       //Standard implementation
       // Insert the token ID into the form so it gets submitted to the server:
-     // $form.append($('<input type="hidden" name="stripeToken">').val(token));
-     // $form.get(0).submit();
+      $form.append($('<input type="hidden" name="stripeToken">').val(token));
+      $form.get(0).submit();
       
       
       
       //Let's implement 3DSecure
+      
 
-        Stripe.threeDSecure.create({
-          card: token,
-          amount: <%= (@product.price*100).to_i %>,
-          currency: 'eur',
-        }, created3DSecure);
+      //    Stripe.threeDSecure.create({
+      //      card: token,
+      //      amount: <%= (@product.price*100).to_i %>,
+      //      currency: 'eur',
+      //    }, created3DSecure);
         
 
-      function displayResult(resultText) {
-        $form.find('.payment-errors').text(resultText);
-      }
+      //  function displayResult(resultText) {
+      //    $form.find('.payment-errors').text(resultText);
+      //  }
       
       
-      function created3DSecure(status, result) {
-        if (status != 200) {
-          var message = result['error']['message'];
-          displayResult("Unexpected 3D Secure response status: " + status + ". Error: " + message);
-          return;
-        }
+      //  function created3DSecure(status, result) {
+      //    if (status != 200) {
+      //      var message = result['error']['message'];
+      //      displayResult("Unexpected 3D Secure response status: " + status + ". Error: " + message);
+      //      return;
+      //    }
       
-        var tdsToken = result['id'],
-        redirectURL = result['redirect_url'],
-        redirectStatus = result['status'];
+      //    var tdsToken = result['id'],
+      //    redirectURL = result['redirect_url'],
+      //    redirectStatus = result['status'];
       
-        if (redirectStatus == 'succeeded') {
-          displayResult("This card does not support 3D Secure authentication, but liability will be shifted to the card issuer.");
+      //    if (redirectStatus == 'succeeded') {
+      //      displayResult("This card does not support 3D Secure authentication, but liability will be shifted to the card issuer.");
           
           //Let's charge the card as normal 
           
-          $form.append($('<input type="hidden" name="stripeToken">').val(tdsToken));
-          $form.get(0).submit();
+      //      $form.append($('<input type="hidden" name="stripeToken">').val(tdsToken));
+      //      $form.get(0).submit();
             
-          return;
-        } else if (redirectStatus != 'redirect_pending') {
-          displayResult("Unexpected 3D Secure status: " + redirectStatus);
-          return;
-        }
+      //      return;
+      //    } else if (redirectStatus != 'redirect_pending') {
+      //      displayResult("Unexpected 3D Secure status: " + redirectStatus);
+      //      return;
+      //    }
       
         // we're able to continue with 3D Secure.
         // insert the iframe, and register our callback
-        var container = document.getElementById("iframe-container");
-        Stripe.threeDSecure.createIframe(redirectURL, container, function(response) {
-          console.log(response);
+      //    var container = document.getElementById("iframe-container");
+      //    Stripe.threeDSecure.createIframe(redirectURL, container, function(response) {
+      //      console.log(response);
           // hide the modal dialog again
-          $("#modal").modal('hide');
+      //      $("#modal").modal('hide');
       
-          if (response.status == 'success' || response.status == 'succeeded') {
+      //      if (response.status == 'success' || response.status == 'succeeded') {
             // Posting card token to your server!
             
             
-            $form.append($('<input type="hidden" name="stripeToken">').val(response.id));
-            $form.get(0).submit();
+      //      $form.append($('<input type="hidden" name="stripeToken">').val(response.id));
+      //      $form.get(0).submit();
             
             
-          } else {
-            var msg = '3D Secure authentication failed: ' + (response.error_message ? response.error_message : response.error_code);
-            displayResult(msg);
-          }
-        });
+      //      } else {
+      //        var msg = '3D Secure authentication failed: ' + (response.error_message ? response.error_message : response.error_code);
+      //        displayResult(msg);
+      //      }
+      //    });
         
          // open the modal dialog
-        $("#modal").modal({
+      //    $("#modal").modal({
           // don't allow the modal to be closed
-          backdrop: "static",
-          keyboard: false
-        });
+      //      backdrop: "static",
+      //      keyboard: false
+      //    });
+
+     //   }
 
       }
-
-    }
+  
   };
   
 
@@ -248,6 +251,30 @@
             </div>
           </div>
         </div>
+        
+        <div class="well" >
+          <form action="/pay_ideal" method="POST" id="payment-form">
+            <table>
+              <tr>
+                <td align="left" colspan="3">
+                  <h2>Pay with iDEAL</h2>
+                </td>
+              </tr>
+              <tr><td colspan="3">
+                    <span class="payment-errors alert-danger">
+              </td></tr>
+              <tr><td colspan="2">
+                <input type="text" data-stripe="text" name="customer_name" placeholder="Name" style="width: 150px;">
+              </td><td></tr>
+              <tr><td colspan="2">
+                </td></tr>
+            </table>
+            <input type="hidden" name="product_id" value= "<%= @product.id.to_s %>" />
+            <input type="submit" class="btn btn-success" value= " <%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
+          </form>
+        </div> <!-- end of the well  -->
+        
+        
           
         <div class="well"> 
           <h2>Pay through Braintree</h2>

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :connects
   resources :jsons
   resources :checkouts,  only: [:new, :create, :show]
+  resources :ideal 
   
   get '/authorize', to: 'connects#authorize'
   get '/disconnect', to: 'connects#disconnect'
@@ -27,11 +28,16 @@ Rails.application.routes.draw do
   get '/logout', to: "logins#destroy"
   
   post '/pay', to: "products#pay"
+
   post '/payandroid', to: "products#payandroid"
   post '/pay_braintree', to: "products#pay_braintree"
+  post '/pay_ideal', to: "products#pay_ideal"
   post '/paybraintreeandroid', to: "products#pay_braintree_android"
   
   get '/getbraintreetoken', to: "products#getbraintreetoken"
+  
+  get '/confirmation', to: "confirmations#new"
+  get '/charge_ideal', to: "confirmations#charge_ideal"
 
   
   
