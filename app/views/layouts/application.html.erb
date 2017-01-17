@@ -8,8 +8,7 @@
   <%= csrf_meta_tags %>
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-
+  <script type="text/javascript" src="https://js.stripe.com/v3/stripe-beta.js"></script>
 
 </head>
 <body>
@@ -23,9 +22,10 @@
 
 
 
-  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-  <script src="https://js.braintreegateway.com/js/braintree-2.20.0.min.js"></script>
+  <!-- <script type="text/javascript" src="https://js.stripe.com/v2/"></script> -->
+  <!-- <script src="https://js.braintreegateway.com/js/braintree-2.20.0.min.js"></script>  -->
 
+<!--
   <script>
   
     var clientToken="<%= @braintree_client_token %>";
@@ -33,7 +33,7 @@
         container: "braintree-payment-form"
       });
   </script>
-
+-->
   
 
   

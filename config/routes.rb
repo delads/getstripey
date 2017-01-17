@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   get '/authorize', to: 'connects#authorize'
   get '/disconnect', to: 'connects#disconnect'
   post '/webhook', to: 'connects#webhook'
+  get '/connects/new', to: 'connects#new'
+  post '/connects/new', to: 'connects#new'
   
   get '/register', to: 'merchants#new'
   

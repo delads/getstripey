@@ -24,6 +24,12 @@ $navbar-default-bg: #FFFFFF;
   height: 70px;
 }
 
+label {
+  min-width: 100%;
+}
+
+
+
 .bg {
   background: url('/assets/images/bg_blueplane.jpg') no-repeat center center;
   position: fixed;
