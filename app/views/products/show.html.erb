@@ -1,7 +1,12 @@
 
   
-  <!--<script type="text/javascript" src="https://js.stripe.com/v3/stripe-beta.js"></script>-->
+  <script type="text/javascript" src="https://js.stripe.com/v3/"></script> 
   
+  <!-- Let's add the v2 js to support Apple Pay (Apparently they can live peacefully together  
+      https://stripe.slack.com/archives/C0UNAV1S8/p1497485372764113
+  -->
+  
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   
 
     <!-- <script type="text/javascript">  -->
@@ -184,82 +189,150 @@
         <% if @connect != nil %>
         
         
-        <div class="well">   
+        
+      <div class="row top-buffer">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingCard">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCard" aria-expanded="false" aria-controls="collapseCard">
+                  <span class="pf pf-stripe"></span> Pay with Stripe Card
+                </a>
+              </h4>
+            </div>
+            <div id="collapseCard" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCard">
+              <div class="panel-body">
                 <form action="/pay" method="post" id="payment-form">
-                  
-                  <h2>Pay through Stripe</h2>
-                  
-                  <span class="payment-errors"></span>
-                  
-                  <div class="form-row">
-                   <label>
-                      <span>Card</span>
-                      <span id="card">
-                      </span>
-                    </label>
+                <div class="form-group">
+                  <label for="card-element" class="col-xs-12 col-sm-4">Card details</label>
+                  <div class="col-xs-12 col-sm-8">
+                    <div id="card-element" class="field"></div>
                   </div>
-              
-                  <input type="hidden" name="product_id" value= "<%= @product.id.to_s %>" />
-                  <input type="submit" class="btn btn-success" value="<%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>">
-
-              </form>
+                   <div id="card-errors" role="alert">
+                      <!-- Used to display Element errors --> 
+                    </div>
+                </div>
+                <input type="hidden" name="product_id" value= "<%= @product.id.to_s %>" />
+                <br>
+                <div class="form-group">
+                  <div class="col-xs-4 col-sm-4" align="left">
+                    <input type="submit" class="btn btn-success" value="<%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>">
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
           </div>
-        
-        
-        <div class="well" >
-          <form action="/pay_ideal" method="POST" id="ideal-payment-form">
-            <table>
-              <tr>
-                <td align="left" colspan="3">
-                  <h2>Pay with iDEAL</h2>
-                </td>
-              </tr>
-              <tr><td colspan="3">
-                    <span class="payment-errors alert-danger">
-              </td></tr>
-              <tr><td colspan="2">
-                <input type="text" data-stripe="text" name="customer_name" placeholder="Name" style="width: 150px;">
-              </td><td></tr>
-              <tr><td colspan="2">
-                </td></tr>
-            </table>
-            <input type="hidden" name="product_id" value= "<%= @product.id.to_s %>" />
-            <input type="submit" class="btn btn-success" value= " <%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
-          </form>
-        </div> <!-- end of the well  -->
-        
-        
-      <!-- 
-        <div class="well"> 
-          <h2>Pay through Braintree</h2>
-            <form id="checkout" method="post" action="/pay_braintree">
-            <div id="braintree-payment-form"></div>
-            <input type="hidden" name="amount" value= "<%= @product.price %>" />
-            <input type="submit"class="btn btn-danger" value="<%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
-          </form>
         </div>
-        -->
+      </div>  
+      
+      
+      
+      
+      <div class="row top-buffer">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="braintreeCard">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBraintreeCard" aria-expanded="false" aria-controls="collapseBraintreeCard">
+                  <span class="pf pf-braintree"></span> Pay with Brantree Card
+                </a>
+              </h4>
+            </div>
+            <div id="collapseBraintreeCard" class="panel-collapse collapse" role="tabpanel" aria-labelledby="braintreeCard">
+              <div class="panel-body">
+                <form id="checkout" method="post" action="/pay_braintree">
+                <div id="braintree-payment-form"></div>
+                <input type="hidden" name="amount" value= "<%= @product.price %>" />
+                <input type="submit"class="btn btn-danger" value="<%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+      
+      
         
         
-        <div class="well">
-          <style>
-            #apple-pay-button {
-              display: none;
-              background-image: -webkit-named-image(apple-pay-logo-black);
-              background-size: 100% 100%;
-              background-origin: content-box;
-              background-repeat: no-repeat;
-              width: 100%;
-              height: 44px;
-              border: 1px solid black;
-              padding: 10px 0;
-             border-radius: 10px;
-            }
-          </style>
-          <button id="apple-pay-button" onclick="beginApplePay()"></button>
+      <div class="row top-buffer">
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingIdeal">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseIdeal" aria-expanded="false" aria-controls="collapseIdeal">
+                <span class="pf pf-ideal"></span> Pay with iDEAL
+              </a>
+            </h4>
+          </div>
+          <div id="collapseIdeal" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingIdeal">
+            <div class="panel-body">
+              <form action="/pay_ideal" method="POST" id="ideal-payment-form">
+                <div class="form-group">
+                  <label for="ideal_bank" class="col-xs-6 col-sm-6">Select your bank</label>
+                  <div class="col-xs-6 col-sm-6">
+                    <select class="form-control" id="ideal_bank">
+                      <option value="">-</option>
+                      <option value="abn_amro">ABN AMRO</option>
+                      <option value="bunq">bunq</option>
+                      <option value="asn_bank">ASN Bank</option>
+                      <option value="ing">ING Bank</option>
+                      <option value="knab">Knab</option>
+                      <option value="rabobank">Rabobank</option>
+                      <option value="regiobank">RegioBank</option>
+                      <option value="sns_bank">SNS Bank</option>
+                      <option value="triodos_bank">Triodos Bank</option>
+                      <option value="van_lanschot">Van Lanschot</option>
+                    </select>
+                  </div>
+                </div>
+                <input type="hidden" name="product_id" value= "<%= @product.id.to_s %>" />
+                <div class="col-xs-4 col-sm-4" align="left">
+                  <input type="submit" class="btn btn-success" value= " <%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>" >
+                </div>
+              </form>
+                
+                
+
+            </div>
+          </div>
+        </div>
+        </div>
         </div>
         
         
+        <div class="row top-buffer">
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="applePay">
+                <h4 class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseApplePay" aria-expanded="false" aria-controls="collapseApplePay">
+                    <span class="pf pf-apple-pay"></span> Pay with Apple Pay
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseApplePay" class="panel-collapse collapse" role="tabpanel" aria-labelledby="applePay">
+                
+                <style>
+                  #apple-pay-button {
+                    display: none;
+                    background-color: black;
+                    background-image: -webkit-named-image(apple-pay-logo-white);
+                    background-size: 100% 100%;
+                    background-origin: content-box;
+                    background-repeat: no-repeat;
+                    width: 100%;
+                    height: 44px;
+                    padding: 10px 0;
+                    border-radius: 10px;
+                  }
+                </style>
+                <button id="apple-pay-button"></button>
+                text
+
+              </div>
+            </div>
+          </div>
+        </div>  
 
   
 
@@ -315,88 +388,152 @@
   var stripe = Stripe('<%= @stripe_user_publishable_api_key  %>');
   var elements = stripe.elements();
   
-  // Construct the Stripe Element:
-  var card = elements.create('card');
-  
+
   // Initialize the Element into our HTML `span` element, with id="card":
-  card.mount('#card');
-  
-  
-  function createToken() {
-    stripe.createToken(card).then(
-      function(token) {
-        stripeTokenHandler(token); // send this to your server
-      },
-      function(error) {
-        console.log(error); // display an error
-      }
-    );
+  // Custom styling can be passed to options when creating an Element.
+  var style = {
+    base: {
+      // Add your base input styles here. For example:
+      fontSize: '14px',
+      lineHeight: '24px'
+    }
   };
   
-  // Create a token when the form is submitted.
+  // Create an instance of the card Element
+  var card = elements.create('card', {style: style});
+  card.mount('#card-element');
+  
+  
+  card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+  
+  // Create a token or display an error when the form is submitted.
   var form = document.getElementById('payment-form');
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    createToken();
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        // Inform the user if there was an error
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server
+        stripeTokenHandler(result.token);
+      }
+    });
   });
   
   function stripeTokenHandler(token) {
-    // Insert the token ID into the form so it gets submitted to the server:
+    // Insert the token ID into the form so it gets submitted to the server
     var form = document.getElementById('payment-form');
     var hiddenInput = document.createElement('input');
     hiddenInput.setAttribute('type', 'hidden');
     hiddenInput.setAttribute('name', 'stripeToken');
-    hiddenInput.setAttribute('value', token.id); 
+    hiddenInput.setAttribute('value', token.id);
     form.appendChild(hiddenInput);
-    
-    // Submit the form:
+  
+    // Submit the form
     form.submit();
   }
+  
+
 
 </script>
 
 
   <script type="text/javascript">
-  
-  Stripe.applePay.checkAvailability(function(available) {
-  if (available) {
-    document.getElementById("apple-pay-button").style.display = 'block';
-  }
-});
+  Stripe.setPublishableKey('<%= @stripe_user_publishable_api_key  %>');
+  Stripe.applePay.stripeAccount = '<%= @stripe_user_id  %>';
 
-  document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);
+  Stripe.applePay.checkAvailability(function(available) {
+    if (available) {
+      document.getElementById('apple-pay-button').style.display = 'block';
+    }
+    else
+      console.log("Apple Pay is not available");
+  });
   
+  document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);
   
   function beginApplePay() {
     var paymentRequest = {
-      countryCode: 'FR',
-      currencyCode: 'EUR',
+      countryCode: 'US',
+      currencyCode: 'USD',
       total: {
         label: '<%= @product.name %>',
         amount: '<%= @product.price %>'
       }
     };
-    
     var session = Stripe.applePay.buildSession(paymentRequest,
     function(result, completion) {
 
-    $.post('/pay', { stripeToken: result.token.id, product_id: <%= @product.id.to_s %> }).done(function() {
-      completion(ApplePaySession.STATUS_SUCCESS);
-      // You can now redirect the user to a receipt page, etc.
-      window.location.href = '/';
-    }).fail(function() {
-      completion(ApplePaySession.STATUS_FAILURE);
+      $.post('/pay', { token: result.token.id }).done(function() {
+        completion(ApplePaySession.STATUS_SUCCESS);
+        // You can now redirect the user to a receipt page, etc.
+        window.location.href = '/success.html';
+      }).fail(function() {
+        completion(ApplePaySession.STATUS_FAILURE);
+      });
+    }, function(error) {
+      console.log(error.message);
     });
 
-  }, function(error) {
-    console.log(error.message);
-  });
+    session.oncancel = function() {
+      console.log("User hit the cancel button in the payment window");
+    };
 
-  session.begin();
+    session.begin();
   }
+  </script>
+  
+  
+  
+<!--  Stripe.applePay.checkAvailability(function(available) {-->
+<!--  if (available) {-->
+<!--    document.getElementById("apple-pay-button").style.display = 'block';-->
+<!--  }-->
+<!--});-->
+
+<!--  document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);-->
+  
+  
+<!--  function beginApplePay() {-->
+<!--    var paymentRequest = {-->
+<!--      countryCode: 'FR',-->
+<!--      currencyCode: 'EUR',-->
+<!--      total: {-->
+<!--        label: '<%= @product.name %>',-->
+<!--        amount: '<%= @product.price %>'-->
+<!--      }-->
+<!--    };-->
+    
+<!--    var session = Stripe.applePay.buildSession(paymentRequest,-->
+<!--    function(result, completion) {-->
+
+<!--    $.post('/pay', { stripeToken: result.token.id, product_id: <%= @product.id.to_s %> }).done(function() {-->
+<!--      completion(ApplePaySession.STATUS_SUCCESS);-->
+      // You can now redirect the user to a receipt page, etc.
+<!--      window.location.href = '/';-->
+<!--    }).fail(function() {-->
+<!--      completion(ApplePaySession.STATUS_FAILURE);-->
+<!--    });-->
+
+<!--  }, function(error) {-->
+<!--    console.log(error.message);-->
+<!--  });-->
+
+<!--  session.begin();-->
+<!--  }-->
 
  
-</script> 
+<!--   </script>  --> 
 
 
 

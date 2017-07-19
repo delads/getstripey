@@ -187,6 +187,7 @@ class ProductsController < ApplicationController
     
     #Let's make the Stripe user token available also (testing if this should be the platform or the user)
     @stripe_user_publishable_api_key = @connect.stripe_publishable_key
+    @stripe_user_id = @connect.stripe_user_id
     
   end
   
@@ -273,7 +274,7 @@ class ProductsController < ApplicationController
       @stripe_secret_api_key = ENV['STRIPE_SECRET_API_KEY_TEST']
       @stripe_publishable_api_key = ENV['STRIPE_PUBLISHABLE_API_KEY_TEST']
       @stripe_client_id = ENV['STRIPE_CLIENT_ID_TEST']
-      #@stripe_user_id = @connect.stripe_user_id
+     
       #@stripe_user_publishable_api_key = @connect.stripe_publishable_api_key
       
     end
