@@ -451,6 +451,8 @@
   <script type="text/javascript">
   Stripe.setPublishableKey('<%= @stripe_user_publishable_api_key  %>');
   Stripe.applePay.stripeAccount = '<%= @stripe_user_id  %>';
+  
+  console.log("Account being used for Apple Pay: " + '<%= @stripe_user_id  %>');
 
   Stripe.applePay.checkAvailability(function(available) {
     if (available) {
