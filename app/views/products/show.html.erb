@@ -1,6 +1,6 @@
 
   
-  <script type="text/javascript" src="https://js.stripe.com/v3/"></script> 
+  <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
   
   <!-- Let's add the v2 js to support Apple Pay (Apparently they can live peacefully together  
       https://stripe.slack.com/archives/C0UNAV1S8/p1497485372764113
@@ -326,8 +326,8 @@
                     border-radius: 10px;
                   }
                 </style>
+                <br>
                 <button id="apple-pay-button"></button>
-                text
 
               </div>
             </div>
@@ -449,10 +449,11 @@
 
 
   <script type="text/javascript">
-  Stripe.setPublishableKey('<%= @stripe_user_publishable_api_key  %>');
+  Stripe.setPublishableKey('<%= @stripe_publishable_api_key  %>');
   Stripe.applePay.stripeAccount = '<%= @stripe_user_id  %>';
   
-  console.log("Account being used for Apple Pay: " + '<%= @stripe_user_id  %>');
+  console.log("Stripe.setPublishableKey: " + '<%= @stripe_publishable_api_key  %>');
+  console.log("Stripe.applePay.stripeAccount: " + '<%= @stripe_user_id  %>');
 
   Stripe.applePay.checkAvailability(function(available) {
     if (available) {
@@ -466,8 +467,8 @@
   
   function beginApplePay() {
     var paymentRequest = {
-      countryCode: 'US',
-      currencyCode: 'USD',
+      countryCode: 'IE',
+      currencyCode: 'EUR',
       total: {
         label: '<%= @product.name %>',
         amount: '<%= @product.price %>'
@@ -476,10 +477,10 @@
     var session = Stripe.applePay.buildSession(paymentRequest,
     function(result, completion) {
 
-      $.post('/pay', { token: result.token.id }).done(function() {
+      $.post('/pay', { stripeToken: result.token.id, product_id: <%= @product.id.to_s %> }).done(function() {
         completion(ApplePaySession.STATUS_SUCCESS);
         // You can now redirect the user to a receipt page, etc.
-        window.location.href = '/success.html';
+        window.location.href = '/';
       }).fail(function() {
         completion(ApplePaySession.STATUS_FAILURE);
       });
