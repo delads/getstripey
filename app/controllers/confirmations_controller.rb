@@ -28,6 +28,7 @@ class ConfirmationsController < ApplicationController
     @connect = Connect.where("merchant_id = ?",@product.merchant).first
     
     charge = Stripe::Charge.create({
+    application_fee: 100,
     amount: amount_to_charge,
     currency: 'eur',
     source: source_id},
