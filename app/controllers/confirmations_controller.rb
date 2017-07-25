@@ -34,8 +34,8 @@ class ConfirmationsController < ApplicationController
     source: source_id},
     {:stripe_account => @connect.stripe_user_id})
     
-    
-    Rails.logger.info("Successful charge for : " + request);
+    ## Let's log this to the Heroku stdout
+    puts "Successful charge for : " + request;
      
     status 200
     
