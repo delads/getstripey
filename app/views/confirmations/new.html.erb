@@ -3,48 +3,4 @@
 
 Thank you for submitting your order. Please wait for confirmation ...
 
-<!-- 
-<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
-<script type="text/javascript">
-  Stripe.setPublishableKey('<%= @stripe_user_publishable_api_key  %>');
-
-  Stripe.source.poll(
-    
-    '<%= @source %>' ,
-    '<%= @client_secret %>' ,
-    function(status, source) {
-      // `source`: is the source object.
-      // `status`: is the HTTP status. if non 200, an error occured
-      //          and the poll is canceled.
-  
-      // This handler is called as soon as the source is retrieved and subsequently
-      // anytime the source's status (`source.status`) is updated.
-      // console.log(status)
-      // console.log(source)
-      
-      if(source.status == 'chargeable'){
-         window.location = window.location.origin + "/charge_ideal?id=" + '<%= @product.id.to_s  %>' + "&source=" + '<%= @source %>'
-       //document.write(window.location.origin + "/confirmation?id=" + '<%= @product.id.to_s  %>' + "&source = " + '<%= @source %>')
-      }
-      else if(source.status == 'consumed'){
-        //document.write("Order complete! Thank you for shopping at GetStripey")
-      }
-      else{
-        document.write("Thank you for submitting your order. Please wait for confirmation ...")
-      }
-  })
-</script>
-
-      <div class="container">
-        <br><br>
-        <h2>Processing transaction ...</h2>
-        <br><br><br>
-        <div class="progress">
-        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-        <span class="sr-only">45% Complete</span>
-        </div>
-        </div>
-      </div>
- 
--->
