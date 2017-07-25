@@ -35,7 +35,7 @@ class ConfirmationsController < ApplicationController
     {:stripe_account => @connect.stripe_user_id})
     
     
-    Rails.logger.debug("Successful charge for : " + request);
+    Rails.logger.info("Successful charge for : " + request);
      
     status 200
     
