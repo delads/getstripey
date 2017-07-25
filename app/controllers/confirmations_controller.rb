@@ -23,13 +23,14 @@ class ConfirmationsController < ApplicationController
     source_id = event_json['data']['object']['id']
     amount_to_charge = event_json['data']['object']['amount']
     product_id = event_json['data']['object']['metadata']['getstripey_product_id']
-    charge_type = event_json['data']['object']['source']['type']
+    charge_type = event_json['data']['object']['type']
     
+    puts "Event Source type : " + charge_type;
     
     ## Only process 3D-Secure charges
     if(charge_type == "three_d_secure")
-      puts "Found 3D-Secure webhook event ";
       
+      puts "Charging Source type : " + charge_type;
       @product = Product.find(product_id)
       @connect = Connect.where("merchant_id = ?",@product.merchant).first
       
