@@ -38,7 +38,7 @@ class ConfirmationsController < ApplicationController
     puts "Successful charge for: ";
     puts "source_id=" + source_id;
      
-    status 200
+    head 200
     
     
   end
