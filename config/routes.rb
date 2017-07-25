@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get '/logout', to: "logins#destroy"
   
   post '/pay', to: "products#pay"
+  post '/pay_3ds', to: "products#pay_3ds"
 
   post '/payandroid', to: "products#payandroid"
   post '/pay_braintree', to: "products#pay_braintree"
@@ -40,6 +41,7 @@ Rails.application.routes.draw do
   
   get '/confirmation', to: "confirmations#new"
   get '/charge_ideal', to: "confirmations#charge_ideal"
+  get '/charge_3ds', to: "confirmations#charge_3ds"
 
   
   

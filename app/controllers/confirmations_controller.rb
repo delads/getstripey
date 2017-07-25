@@ -1,16 +1,45 @@
 class ConfirmationsController < ApplicationController
   before_action :require_same_user, only: [:edit, :update]
-  before_action :set_product
-  before_action :set_merchant
+  ## before_action :set_product
+  ## before_action :set_merchant
   before_action :set_env
   
   def new
-    @source = params[:source]
-    @client_secret = params[:client_secret]
-    @connect = Connect.where("merchant_id = ?",@product.merchant).first
-    @stripe_user_publishable_api_key = @connect.stripe_publishable_key
+  
+    ## Don't expect anything back on the URL
+    ## We want to charge regardless of whether someone comes to this web page or not. 
+    ## @source = params[:source]
+    ## @client_secret = params[:client_secret]
+    ## @connect = Connect.where("merchant_id = ?",@product.merchant).first
+    ## @stripe_user_publishable_api_key = @connect.stripe_publishable_key
     
   end
+  
+  
+  def charge_3ds
+    Stripe.api_key = @stripe_secret_api_key
+    
+    event_json = JSON.parse(request.body.read)
+    source_id = event_json['data']['object']['id']
+    amount_to_charge = event_json['data']['object']['amount']
+    product_id = event_json['data']['object']['metadata']['getstripey_product_id']
+    
+    @product = Product.find(product_id)
+    @connect = Connect.where("merchant_id = ?",@product.merchant).first
+    
+    charge = Stripe::Charge.create({
+    amount: amount_to_charge,
+    currency: 'eur',
+    source: source_id},
+    {:stripe_account => @connect.stripe_user_id})
+    
+    
+    status 200
+    
+    
+  end
+  
+  
   
   def charge_ideal
   

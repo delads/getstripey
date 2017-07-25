@@ -45,8 +45,31 @@ class ProductsController < ApplicationController
     
       render :json => message.to_json
   end
-
   
+
+  def pay_3ds
+    @product = Product.find(params[:product_id])
+    @connect = Connect.where("merchant_id = ?",@product.merchant).first
+    customer_return_url = url_for("http://" + request.host + "/confirmation") 
+    
+    Stripe.api_key = @stripe_secret_api_key
+    sourceId = params[:stripeSource]
+    
+    Rails.logger.debug("3DS ProductsController: sourceId : " + sourceId);
+    
+    source = Stripe::Source.create({
+      amount: (@product.price*100).to_i,
+      currency: 'eur',
+      type: 'three_d_secure',
+      three_d_secure: {card: sourceId,},
+      metadata: {getstripey_product_id: params[:product_id],},
+      redirect: {return_url: customer_return_url + '?id=' + @product.id.to_s}},
+      {stripe_account: @connect.stripe_user_id})
+  
+    redirect_url = source.redirect.url
+    redirect_to redirect_url
+  
+  end
   
   
   def pay

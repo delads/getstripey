@@ -227,6 +227,43 @@
       </div>  
       
       
+      <div class="row top-buffer">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingCard3DS">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseCard3DS" aria-expanded="false" aria-controls="collapseCard3DS">
+                  <span class="pf pf-verified-by-visa"></span> Pay with 3D Secure
+                </a>
+              </h4>
+            </div>
+            <div id="collapseCard3DS" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCard3DS">
+              <div class="panel-body">
+                <form action="/pay_3ds" method="post" id="payment-form-3ds">
+                <div class="form-group">
+                  <label for="card-element-3ds" class="col-xs-12 col-sm-4">Card details</label>
+                  <div class="col-xs-12 col-sm-8">
+                    <div id="card-element-3ds" class="field"></div>
+                  </div>
+                   <div id="card-errors-3ds" role="alert">
+                      <!-- Used to display Element errors --> 
+                    </div>
+                </div>
+                <input type="hidden" name="product_id" value= "<%= @product.id.to_s %>" />
+                <br>
+                <div class="form-group">
+                  <div class="col-xs-4 col-sm-4" align="left">
+                    <input type="submit" class="btn btn-success" value="<%= "Pay €" + number_with_precision(@product.price, :precision => 2).to_s %>">
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+      
+      
       
       
       <div class="row top-buffer">
@@ -384,11 +421,10 @@
 
 
 
-  <script type="text/javascript">
+<script type="text/javascript">
   var stripe = Stripe('<%= @stripe_user_publishable_api_key  %>');
   var elements = stripe.elements();
   
-
   // Initialize the Element into our HTML `span` element, with id="card":
   // Custom styling can be passed to options when creating an Element.
   var style = {
@@ -443,8 +479,6 @@
     form.submit();
   }
   
-
-
 </script>
 
 
@@ -497,46 +531,68 @@
   </script>
   
   
-  
-<!--  Stripe.applePay.checkAvailability(function(available) {-->
-<!--  if (available) {-->
-<!--    document.getElementById("apple-pay-button").style.display = 'block';-->
-<!--  }-->
-<!--});-->
-
-<!--  document.getElementById('apple-pay-button').addEventListener('click', beginApplePay);-->
+<!-- 3D Secure implementation -->
   
   
-<!--  function beginApplePay() {-->
-<!--    var paymentRequest = {-->
-<!--      countryCode: 'FR',-->
-<!--      currencyCode: 'EUR',-->
-<!--      total: {-->
-<!--        label: '<%= @product.name %>',-->
-<!--        amount: '<%= @product.price %>'-->
-<!--      }-->
-<!--    };-->
-    
-<!--    var session = Stripe.applePay.buildSession(paymentRequest,-->
-<!--    function(result, completion) {-->
-
-<!--    $.post('/pay', { stripeToken: result.token.id, product_id: <%= @product.id.to_s %> }).done(function() {-->
-<!--      completion(ApplePaySession.STATUS_SUCCESS);-->
-      // You can now redirect the user to a receipt page, etc.
-<!--      window.location.href = '/';-->
-<!--    }).fail(function() {-->
-<!--      completion(ApplePaySession.STATUS_FAILURE);-->
-<!--    });-->
-
-<!--  }, function(error) {-->
-<!--    console.log(error.message);-->
-<!--  });-->
-
-<!--  session.begin();-->
-<!--  }-->
-
+  <script type="text/javascript">
+  var stripe_3ds = Stripe('<%= @stripe_user_publishable_api_key  %>');
+  var elements_3ds = stripe_3ds.elements();
+  
+  // Initialize the Element into our HTML `span` element, with id="card":
+  // Custom styling can be passed to options when creating an Element.
+  var style = {
+    base: {
+      // Add your base input styles here. For example:
+      fontSize: '14px',
+      lineHeight: '24px'
+    }
+  };
+  
+  // Create an instance of the card Element
+  var card_3ds = elements_3ds.create('card', {style: style});
+  card_3ds.mount('#card-element-3ds');
+  
+  
+  card_3ds.addEventListener('change', function(event) {
+    var displayError_3ds = document.getElementById('card-errors-3ds');
+    if (event.error) {
+      displayError_3ds.textContent = event.error.message;
+    } else {
+      displayError_3ds.textContent = '';
+    }
+  });
+  
+  // Create a source or display an error when the form is submitted.
+  var form_3ds = document.getElementById('payment-form-3ds');
+  form_3ds.addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    stripe_3ds.createSource(card_3ds).then(function(result) {
+      if (result.error) {
+        // Inform the user if there was an error
+        var errorElement_3ds = document.getElementById('card-errors-3ds');
+        errorElement_3ds.textContent = result.error.message;
+      } else {
+        // Send the token to your server
+        stripeSourceHandler(result.source);
+      }
+    });
+  });
+  
+  function stripeSourceHandler(source) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form_3ds = document.getElementById('payment-form-3ds');
+    var hiddenInput_3ds = document.createElement('input');
+    hiddenInput_3ds.setAttribute('type', 'hidden');
+    hiddenInput_3ds.setAttribute('name', 'stripeSource');
+    hiddenInput_3ds.setAttribute('value', source.id);
+    form_3ds.appendChild(hiddenInput_3ds);
+  
+    // Submit the form
+    form_3ds.submit();
+  }
+  
+</script>
+  
+  
  
-<!--   </script>  --> 
-
-
-
