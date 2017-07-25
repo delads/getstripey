@@ -59,6 +59,7 @@ class ProductsController < ApplicationController
     
     source = Stripe::Source.create({
       amount: (@product.price*100).to_i,
+      application_fee: 100,
       currency: 'eur',
       type: 'three_d_secure',
       three_d_secure: {card: sourceId,},
