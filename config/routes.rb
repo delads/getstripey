@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   
   get '/confirmation', to: "confirmations#new"
   get '/charge_ideal', to: "confirmations#charge_ideal"
-  get '/charge_3ds', to: "confirmations#charge_3ds"
+  post '/charge_3ds', to: "confirmations#charge_3ds"
 
   
   
