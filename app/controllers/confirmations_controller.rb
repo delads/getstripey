@@ -23,20 +23,27 @@ class ConfirmationsController < ApplicationController
     source_id = event_json['data']['object']['id']
     amount_to_charge = event_json['data']['object']['amount']
     product_id = event_json['data']['object']['metadata']['getstripey_product_id']
+    charge_type = event_json['data']['object']['source']['type']
     
-    @product = Product.find(product_id)
-    @connect = Connect.where("merchant_id = ?",@product.merchant).first
     
-    charge = Stripe::Charge.create({
-    application_fee: 100,
-    amount: amount_to_charge,
-    currency: 'eur',
-    source: source_id},
-    {:stripe_account => @connect.stripe_user_id})
-    
-    ## Let's log this to the Heroku stdout
-    puts "Successful charge for: ";
-    puts "source_id=" + source_id;
+    ## Only process 3D-Secure charges
+    if(charge_type == "three_d_secure")
+      puts "Found 3D-Secure webhook event ";
+      
+      @product = Product.find(product_id)
+      @connect = Connect.where("merchant_id = ?",@product.merchant).first
+      
+      charge = Stripe::Charge.create({
+      application_fee: 100,
+      amount: amount_to_charge,
+      currency: 'eur',
+      source: source_id},
+      {:stripe_account => @connect.stripe_user_id})
+      
+      ## Let's log this to the Heroku stdout
+      puts "Successful charge for: ";
+      puts "source_id=" + source_id;
+    end
      
     head 200
     
