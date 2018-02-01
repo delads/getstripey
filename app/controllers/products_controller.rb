@@ -15,7 +15,18 @@ class ProductsController < ApplicationController
     Braintree::Transaction::Status::SubmittedForSettlement,
   ]
   
-  
+  def create_customer_android
+
+    stripe_version = params['api_version']
+    customer_id = customer_number
+    key = Stripe::EphemeralKey.create(
+      {customer: customer_id},
+      {stripe_version: stripe_version}
+    )
+    
+    render :json=> key.to_json
+
+  end
   
   def payandroid
     @product = Product.find(params[:product_id])
@@ -279,6 +290,10 @@ class ProductsController < ApplicationController
     
     def set_merchant
       @merchant = @product.merchant
+    end
+    
+    def set_customer
+      customer_number = "1234567"
     end
     
     def require_same_user

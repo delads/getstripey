@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   
   get '/getbraintreetoken', to: "products#getbraintreetoken"
   
+  get '/create_ephemeralkey_android', to: "products#create_ephemeralkey_android"
+  
   get '/confirmation', to: "confirmations#new"
   get '/charge_ideal', to: "confirmations#charge_ideal"
   post '/charge_3ds', to: "confirmations#charge_3ds"
