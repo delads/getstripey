@@ -71,8 +71,11 @@ class ConfirmationsController < ApplicationController
     flash[:success] = "Product purchased"
     redirect_to root_path
     
-    
-
+  end
+  
+  def  webhook
+    event_json = JSON.parse(request.body.read)
+    puts :json=> event_json
   end
   
   
