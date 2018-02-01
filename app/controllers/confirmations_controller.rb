@@ -76,6 +76,8 @@ class ConfirmationsController < ApplicationController
   def  webhook
     event_json = JSON.parse(request.body.read)
     puts :json=> event_json
+    
+    head 200
   end
   
   
